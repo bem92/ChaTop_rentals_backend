@@ -4,6 +4,10 @@ import com.chatop.dto.*;
 import com.chatop.model.User;
 import com.chatop.service.RentalService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,25 +23,47 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/rentals")
 @RequiredArgsConstructor
-@Tag(name = "Rentals")
+@Tag(name = "Rentals", description = "Gestion des locations saisonnières")
+@SecurityRequirement(name = "bearerAuth")
 public class RentalController {
 
     private final RentalService rentalService;
 
     @GetMapping
-    @Operation(summary = "Get all rentals")
+    @Operation(
+        summary = "Lister toutes les locations",
+        description = "Retourne la liste complète des locations disponibles",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Liste des locations",
+                content = @Content(schema = @Schema(implementation = RentalsResponse.class)))
+        }
+    )
     public ResponseEntity<RentalsResponse> getAllRentals() {
         return ResponseEntity.ok(new RentalsResponse(rentalService.getAllRentals()));
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get rental by id")
+    @Operation(
+        summary = "Détails d'une location",
+        description = "Retourne les informations d'une location par son identifiant",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Location trouvée",
+                content = @Content(schema = @Schema(implementation = RentalDTO.class)))
+        }
+    )
     public ResponseEntity<RentalDTO> getRental(@PathVariable Integer id) {
         return ResponseEntity.ok(rentalService.getRental(id));
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "Create rental")
+    @Operation(
+        summary = "Créer une location",
+        description = "Crée une nouvelle location pour l'utilisateur courant",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Location créée",
+                content = @Content(schema = @Schema(implementation = RentalResponse.class)))
+        }
+    )
     public ResponseEntity<RentalResponse> createRental(@Valid @ModelAttribute RentalRequest request) {
         User owner = getCurrentUser();
         rentalService.createRental(request, owner);
@@ -45,7 +71,14 @@ public class RentalController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "Update rental")
+    @Operation(
+        summary = "Mettre à jour une location",
+        description = "Met à jour une location existante appartenant à l'utilisateur",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Location mise à jour",
+                content = @Content(schema = @Schema(implementation = RentalResponse.class)))
+        }
+    )
     public ResponseEntity<RentalResponse> updateRental(@PathVariable Integer id,
                                                        @Valid @ModelAttribute RentalRequest request) {
         User currentUser = getCurrentUser();

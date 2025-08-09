@@ -24,7 +24,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsServiceImpl userDetailsService;
 
     /**
-     * ✅ Exclut les routes publiques du filtrage JWT avec le préfixe /api
+     * Exclut les routes publiques du filtrage JWT avec le préfixe /api
      */
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {

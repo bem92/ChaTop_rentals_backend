@@ -37,9 +37,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 // Autorise toutes les requêtes OPTIONS pour les pré-vols CORS
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                // ✅ Routes publiques avec préfixe /api
+                // Routes publiques avec préfixe /api
                 .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
-                // ✅ Optionnel : autoriser la documentation Swagger
+                // Optionnel : autoriser la documentation Swagger
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 // Toutes les autres nécessitent un token valide
                 .anyRequest().authenticated()
