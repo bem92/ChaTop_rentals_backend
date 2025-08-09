@@ -79,6 +79,12 @@
       <version>${jjwt.version}</version>
       <scope>runtime</scope>
     </dependency>
+    <!-- OpenAPI documentation -->
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+      <version>2.1.0</version>
+    </dependency>
     
     <!-- Dépendance de test pour JUnit 5 + SpringBootTest -->
     <dependency>

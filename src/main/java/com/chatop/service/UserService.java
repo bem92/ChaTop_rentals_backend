@@ -1,10 +1,13 @@
 package com.chatop.service;
 
+import com.chatop.dto.UserMeDTO;
 import com.chatop.exception.UserAlreadyExistsException;
 import com.chatop.exception.UserNotFoundException;
 import com.chatop.model.User;
 import com.chatop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,5 +56,21 @@ public class UserService {
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("Utilisateur introuvable avec cet email"));
+    }
+
+    /**
+     * Récupère l'utilisateur actuellement authentifié.
+     *
+     * @return les informations de l'utilisateur connecté
+     * @throws UserNotFoundException si aucun utilisateur n'est authentifié
+     */
+    public UserMeDTO getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !(authentication.getPrincipal() instanceof User)) {
+            throw new UserNotFoundException("Utilisateur non authentifié");
+        }
+
+        User user = (User) authentication.getPrincipal();
+        return new UserMeDTO(user.getId(), user.getName(), user.getEmail());
     }
 }

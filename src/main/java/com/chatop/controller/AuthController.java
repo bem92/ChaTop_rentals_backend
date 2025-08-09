@@ -2,9 +2,12 @@ package com.chatop.controller;
 
 import com.chatop.dto.AuthRequest;
 import com.chatop.dto.AuthResponse;
+import com.chatop.dto.UserMeDTO;
 import com.chatop.model.User;
 import com.chatop.service.JwtService;
 import com.chatop.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth") // ✅ Changement pour /api/auth
 @RequiredArgsConstructor
+@Tag(name = "Auth")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -55,5 +59,17 @@ public class AuthController {
         User user = userService.getUserByEmail(emailOrLogin);
         String token = jwtService.generateToken(user);
         return ResponseEntity.ok(new AuthResponse(token));
+    }
+
+    /**
+     * Renvoie les informations de l'utilisateur actuellement connecté.
+     *
+     * @return les informations de l'utilisateur authentifié
+     */
+    @GetMapping("/me")
+    @Operation(summary = "Obtenir l'utilisateur connecté")
+    public ResponseEntity<UserMeDTO> getCurrentUser() {
+        UserMeDTO currentUser = userService.getCurrentUser();
+        return ResponseEntity.ok(currentUser);
     }
 }
