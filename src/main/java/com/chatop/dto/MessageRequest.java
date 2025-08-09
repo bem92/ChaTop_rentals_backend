@@ -18,9 +18,6 @@ public class MessageRequest {
     @NotNull
     private Integer rentalId;
 
-    @NotNull
-    private Integer userId;
-
     @NotBlank
     private String message;
 }
