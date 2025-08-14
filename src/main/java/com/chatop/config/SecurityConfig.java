@@ -19,6 +19,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+/**
+ * Configuration centrale de la sécurité Spring (JWT, CORS, etc.).
+ */
 @Configuration // Indique à Spring que cette classe contient des beans de configuration
 @RequiredArgsConstructor // Génère un constructeur pour injecter les dépendances finales
 public class SecurityConfig {

@@ -27,17 +27,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Controller exposing rental endpoints.
+ * Controller exposant les endpoints liés aux locations.
  */
-@RestController
-@RequestMapping("/api/rentals")
+@RestController // Indique que les méthodes retournent des réponses JSON
+@RequestMapping("/api/rentals") // Préfixe commun à toutes les routes
 @RequiredArgsConstructor
 @Tag(name = "Rentals", description = "Gestion des locations saisonnières")
-@SecurityRequirement(name = "bearerAuth")
+@SecurityRequirement(name = "bearerAuth") // Toutes les routes nécessitent un JWT
 public class RentalController {
 
-    private final RentalService rentalService;
+    private final RentalService rentalService; // Service métier
 
+    /**
+     * GET /api/rentals
+     *
+     * @return liste complète des locations
+     */
     @GetMapping
     @Operation(
         summary = "Lister toutes les locations",
@@ -51,6 +56,12 @@ public class RentalController {
         return ResponseEntity.ok(new RentalsResponse(rentalService.getAllRentals()));
     }
 
+    /**
+     * GET /api/rentals/{id}
+     *
+     * @param id identifiant de la location recherchée
+     * @return détails de la location
+     */
     @GetMapping("/{id}")
     @Operation(
         summary = "Détails d'une location",
@@ -64,6 +75,12 @@ public class RentalController {
         return ResponseEntity.ok(rentalService.getRental(id));
     }
 
+    /**
+     * POST /api/rentals
+     *
+     * @param request données de la location envoyées dans un formulaire multipart
+     * @return message de confirmation
+     */
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
         summary = "Créer une location",
@@ -79,6 +96,13 @@ public class RentalController {
         return ResponseEntity.ok(new RentalResponse("Rental created !"));
     }
 
+    /**
+     * PUT /api/rentals/{id}
+     *
+     * @param id      identifiant de la location à mettre à jour
+     * @param request nouvelles valeurs (formulaire multipart)
+     * @return message de confirmation
+     */
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
         summary = "Mettre à jour une location",
@@ -95,6 +119,9 @@ public class RentalController {
         return ResponseEntity.ok(new RentalResponse("Rental updated !"));
     }
 
+    /**
+     * Récupère l'utilisateur authentifié à partir du contexte de sécurité.
+     */
     private User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (User) authentication.getPrincipal();

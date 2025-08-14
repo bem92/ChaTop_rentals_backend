@@ -20,6 +20,9 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * Entité représentant un utilisateur de l'application.
+ */
 @Entity
 @Table(name = "USERS") // Le nom correspond à la table SQL
 @Getter @Setter
@@ -29,19 +32,19 @@ import java.util.Collections;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Identifiant auto-incrémenté
     private Integer id;
 
     @Column(nullable = false, unique = true, length = 255)
-    private String email;
+    private String email; // Adresse e-mail unique
 
     @Column(nullable = false, length = 255)
-    private String name;
+    private String name; // Nom affiché
 
     @Column(nullable = false, length = 255)
-    private String password;
+    private String password; // Mot de passe chiffré
 
-    // Correction ici : utilisation de java.sql.Timestamp
+    // Dates de suivi des modifications
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
 

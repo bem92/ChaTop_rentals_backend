@@ -21,6 +21,6 @@ import org.springframework.context.annotation.Configuration;
     scheme = "bearer",
     bearerFormat = "JWT"
 )
-@Configuration
+@Configuration // Permet à Spring de charger cette configuration
 public class OpenApiConfig {
 }

@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserMeDTO {
-    private Integer id;
-    private String name;
-    private String email;
+    private Integer id;    // Identifiant unique
+    private String name;   // Nom complet
+    private String email;  // Adresse e-mail
 }

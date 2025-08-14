@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Gestion centralisée des exceptions pour l'API.
  */
-@RestControllerAdvice
+@RestControllerAdvice // Applique les traitements à tous les contrôleurs REST
 public class GlobalExceptionHandler {
 
     /**
