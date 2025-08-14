@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Controller for sending messages about rentals.
+ * Controller pour l'envoi de messages liés aux locations.
  */
 @RestController
 @RequestMapping("/api/messages")
@@ -27,8 +27,14 @@ import org.springframework.web.bind.annotation.RestController;
 @SecurityRequirement(name = "bearerAuth")
 public class MessageController {
 
-    private final MessageService messageService;
+    private final MessageService messageService; // Service métier des messages
 
+    /**
+     * POST /api/messages
+     *
+     * @param request contenu du message et location ciblée
+     * @return confirmation d'envoi
+     */
     @PostMapping
     @Operation(
         summary = "Envoyer un message",

@@ -4,10 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * Simple DTO for returning a message after rental operations.
+ * DTO de confirmation utilisé après les opérations sur les locations.
  */
 @Getter
 @AllArgsConstructor
 public class RentalResponse {
+    /**
+     * Message à afficher côté client.
+     */
     private String message;
 }

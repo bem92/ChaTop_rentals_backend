@@ -8,16 +8,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * DTO used when sending a message about a rental.
+ * Requête envoyée pour poster un message concernant une location.
  */
 @Getter
 @Setter
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class) // Convertit les noms en snake_case
 public class MessageRequest {
 
-    @NotNull
+    @NotNull // Identifiant de la location ciblée
     private Integer rentalId;
 
-    @NotBlank
+    @NotBlank // Contenu du message rédigé par l'utilisateur
     private String message;
 }

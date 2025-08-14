@@ -10,24 +10,24 @@ import java.math.BigDecimal;
 
 
 /**
- * DTO for rental creation or update requests.
+ * Données de création ou de mise à jour d'une location.
  */
 @Getter
 @Setter
 public class RentalRequest {
 
-    @NotBlank
+    @NotBlank // Nom obligatoire
     private String name;
 
-    @NotNull
+    @NotNull // Surface en m²
     private BigDecimal surface;
 
-    @NotNull
+    @NotNull // Prix en euros
     private BigDecimal price;
 
-    // Picture is required for creation, optional for update
+    // Image obligatoire à la création, optionnelle à la mise à jour
     private MultipartFile picture;
 
-    @NotBlank
+    @NotBlank // Description textuelle
     private String description;
 }

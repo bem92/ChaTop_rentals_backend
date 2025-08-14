@@ -20,10 +20,10 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
- * Entity representing a rental.
+ * Entité représentant une location.
  */
 @Entity
-@Table(name = "RENTALS")
+@Table(name = "RENTALS") // Nom de la table
 @Getter
 @Setter
 @NoArgsConstructor
@@ -32,33 +32,33 @@ import java.sql.Timestamp;
 public class Rental {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Clé primaire auto-incrémentée
     private Integer id;
 
     @Column(nullable = false)
-    private String name;
+    private String name; // Nom de la location
 
     @Column(nullable = false)
-    private BigDecimal surface;
+    private BigDecimal surface; // Surface en m²
 
     @Column(nullable = false)
-    private BigDecimal price;
+    private BigDecimal price; // Prix en euros
 
     @Column(length = 255)
-    private String picture;
+    private String picture; // Chemin/URL de la photo
 
     @Column(length = 2000)
-    private String description;
+    private String description; // Description de l'annonce
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false) // Plusieurs locations peuvent appartenir au même propriétaire
     @JoinColumn(name = "owner_id")
     private User owner;
 
     @Column(name = "created_at", nullable = false)
-    private Timestamp createdAt;
+    private Timestamp createdAt; // Date de création
 
     @Column(name = "updated_at", nullable = false)
-    private Timestamp updatedAt;
+    private Timestamp updatedAt; // Date de mise à jour
 
     @PrePersist
     protected void onCreate() {

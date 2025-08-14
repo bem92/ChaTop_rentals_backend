@@ -15,12 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Service chargé de la gestion des utilisateurs.
  */
-@Service
-@RequiredArgsConstructor
+@Service // Composant Spring exposant la logique métier liée aux utilisateurs
+@RequiredArgsConstructor // Injecte les dépendances finales via un constructeur
 public class UserService {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository; // DAO des utilisateurs
+    private final PasswordEncoder passwordEncoder; // Outil pour chiffrer les mots de passe
 
     /**
      * Inscrit un nouvel utilisateur dans la base de données.

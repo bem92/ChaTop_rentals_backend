@@ -8,12 +8,15 @@ import lombok.Setter;
 import java.util.List;
 
 /**
- * DTO wrapping list of rentals.
+ * DTO englobant une liste de locations.
  */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class RentalsResponse {
+    /**
+     * Liste des locations retournées au client.
+     */
     private List<RentalDTO> rentals;
 }

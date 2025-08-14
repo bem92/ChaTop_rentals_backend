@@ -13,16 +13,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service for handling messages related to rentals.
+ * Service pour la gestion des messages envoyés aux propriétaires de locations.
  */
-@Service
+@Service // Composant Spring gérant la logique métier des messages
 @RequiredArgsConstructor
 public class MessageService {
 
-    private final MessageRepository messageRepository;
-    private final RentalRepository rentalRepository;
+    private final MessageRepository messageRepository; // Accès aux messages
+    private final RentalRepository rentalRepository;   // Accès aux locations
 
-    @Transactional
+    /**
+     * Enregistre un message envoyé par l'utilisateur connecté.
+     *
+     * @param request contenu du message et identifiant de la location
+     */
+    @Transactional // Toutes les opérations sont effectuées dans une transaction
     public void sendMessage(MessageRequest request) {
         Rental rental = rentalRepository.findById(request.getRentalId())
                 .orElseThrow(() -> new RuntimeException("Rental not found"));
@@ -38,6 +43,6 @@ public class MessageService {
                 .message(request.getMessage())
                 .build();
 
-        messageRepository.save(message);
+        messageRepository.save(message); // Persiste le message
     }
 }

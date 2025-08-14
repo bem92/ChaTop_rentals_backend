@@ -27,15 +27,15 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Contrôleur gérant l'authentification et l'inscription des utilisateurs.
  */
-@RestController
-@RequestMapping("/api/auth") // point d'accès racine pour l'authentification
+@RestController // Composant REST retournant des réponses JSON
+@RequestMapping("/api/auth") // Point d'accès racine pour l'authentification
 @RequiredArgsConstructor
 @Tag(name = "Auth", description = "Gestion de l'authentification des utilisateurs")
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
-    private final UserService userService;
-    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager; // Vérifie les identifiants
+    private final UserService userService; // Opérations métier sur les utilisateurs
+    private final JwtService jwtService;   // Génération des tokens JWT
 
     /**
      * Inscription d'un nouvel utilisateur.

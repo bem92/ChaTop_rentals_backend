@@ -19,10 +19,10 @@ import lombok.Setter;
 import java.sql.Timestamp;
 
 /**
- * Entity representing a message sent about a rental.
+ * Entité représentant un message envoyé à propos d'une location.
  */
-@Entity
-@Table(name = "MESSAGES")
+@Entity // Marque la classe comme persistante
+@Table(name = "MESSAGES") // Spécifie la table correspondante
 @Getter
 @Setter
 @NoArgsConstructor
@@ -31,25 +31,25 @@ import java.sql.Timestamp;
 public class Message {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Clé primaire auto-incrémentée
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne // Plusieurs messages peuvent concerner une même location
     @JoinColumn(name = "rental_id")
     private Rental rental;
 
-    @ManyToOne
+    @ManyToOne // Plusieurs messages peuvent être envoyés par un même utilisateur
     @JoinColumn(name = "user_id")
     private User user;
 
     @Column(length = 2000)
-    private String message;
+    private String message; // Contenu du message
 
     @Column(name = "created_at", nullable = false)
-    private Timestamp createdAt;
+    private Timestamp createdAt; // Date de création
 
     @Column(name = "updated_at", nullable = false)
-    private Timestamp updatedAt;
+    private Timestamp updatedAt; // Date de dernière modification
 
     @PrePersist
     protected void onCreate() {

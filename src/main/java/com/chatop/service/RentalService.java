@@ -20,25 +20,31 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
- * Service handling rental operations.
+ * Service gérant les opérations liées aux locations.
  */
-@Service
-@RequiredArgsConstructor
+@Service // Composant Spring contenant la logique métier
+@RequiredArgsConstructor // Génère un constructeur pour les dépendances finales
 public class RentalService {
 
+    // Accès à la base de données pour les entités Rental
     private final RentalRepository rentalRepository;
 
     /**
-     * Retrieve all rentals.
+     * Récupère toutes les locations disponibles.
+     *
+     * @return liste de {@link RentalDTO}
      */
     public List<RentalDTO> getAllRentals() {
         return rentalRepository.findAll().stream()
-                .map(this::toDto)
+                .map(this::toDto) // Conversion Entity -> DTO
                 .collect(Collectors.toList());
     }
 
     /**
-     * Retrieve a rental by its id.
+     * Récupère une location par son identifiant.
+     *
+     * @param id identifiant de la location
+     * @return la location correspondante sous forme de DTO
      */
     public RentalDTO getRental(Integer id) {
         Rental rental = rentalRepository.findById(id)
@@ -47,11 +53,14 @@ public class RentalService {
     }
 
     /**
-     * Create a new rental.
+     * Crée une nouvelle location à partir des données fournies.
+     *
+     * @param request informations saisies par l'utilisateur
+     * @param owner   propriétaire de la location
      */
-    @Transactional
+    @Transactional // Garantit une persistance atomique
     public void createRental(RentalRequest request, User owner) {
-        String picturePath = storePicture(request.getPicture());
+        String picturePath = storePicture(request.getPicture()); // Enregistre la photo sur le disque
 
         Rental rental = Rental.builder()
                 .name(request.getName())
@@ -62,17 +71,22 @@ public class RentalService {
                 .owner(owner)
                 .build();
 
-        rentalRepository.save(rental);
+        rentalRepository.save(rental); // Sauvegarde dans la base
     }
 
     /**
-     * Update an existing rental.
+     * Met à jour une location existante.
+     *
+     * @param id          identifiant de la location à modifier
+     * @param request     nouvelles valeurs
+     * @param currentUser utilisateur actuellement connecté
      */
     @Transactional
     public void updateRental(Integer id, RentalRequest request, User currentUser) {
         Rental rental = rentalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Rental not found"));
 
+        // Vérifie que la location appartient bien à l'utilisateur
         if (!rental.getOwner().getId().equals(currentUser.getId())) {
             throw new RuntimeException("Not authorized to update this rental");
         }
@@ -81,11 +95,14 @@ public class RentalService {
         rental.setSurface(request.getSurface());
         rental.setPrice(request.getPrice());
         rental.setDescription(request.getDescription());
-        // Picture is not updated according to front-end
+        // L'image n'est pas mise à jour selon le front-end
 
         rentalRepository.save(rental);
     }
 
+    /**
+     * Convertit une entité {@link Rental} en {@link RentalDTO}.
+     */
     private RentalDTO toDto(Rental rental) {
         return RentalDTO.builder()
                 .id(rental.getId())
@@ -100,14 +117,17 @@ public class RentalService {
                 .build();
     }
 
+    /**
+     * Stocke l'image sur le disque et renvoie son chemin.
+     */
     private String storePicture(MultipartFile picture) {
         if (picture == null || picture.isEmpty()) {
-            return null;
+            return null; // Aucune image fournie
         }
         try {
             String fileName = UUID.randomUUID() + "_" + picture.getOriginalFilename();
             Path uploadDir = Paths.get("uploads");
-            Files.createDirectories(uploadDir);
+            Files.createDirectories(uploadDir); // Crée le dossier s'il n'existe pas
             Path filePath = uploadDir.resolve(fileName);
             Files.copy(picture.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
             return filePath.toString();
