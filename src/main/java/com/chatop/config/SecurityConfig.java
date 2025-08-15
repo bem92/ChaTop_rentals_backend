@@ -44,6 +44,8 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
                 // Optionnel : autoriser la documentation Swagger
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                // Autorise l'accès public aux images uploadées
+                .requestMatchers( "/uploads/**" ).permitAll()
                 // Toutes les autres nécessitent un token valide
                 .anyRequest().authenticated()
             )

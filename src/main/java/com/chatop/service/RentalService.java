@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -130,7 +131,12 @@ public class RentalService {
             Files.createDirectories(uploadDir); // Crée le dossier s'il n'existe pas
             Path filePath = uploadDir.resolve(fileName);
             Files.copy(picture.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-            return filePath.toString();
+
+            // Retourne une URL absolue accessible publiquement
+            return ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/uploads/")
+                    .path(fileName)
+                    .toUriString();
         } catch (IOException e) {
             throw new RuntimeException("Could not store picture", e);
         }
